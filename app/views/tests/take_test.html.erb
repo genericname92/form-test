@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title>Plz answer some questions</title>
+  </head>
+  <body>
+    <div class="timer">
+      Time left:
+      <span class="time-left"></span>
+    </div>
+    <% @test_questions.each do |test_question| %>
+      <% question = @questions.find(test_question.question_id) %>
+      <%= question.title %>:
+      <%= question.body %>
+      <form class="" id="<%= test_question.id %>" action="<%= test_answers_url %>" method="post">
+        <input type="hidden" name="authenticity_token" value="<%= form_authenticity_token %>">
+        <input type="hidden" name="test_question_id" value="<%= test_question.id %>">
+        <textarea name="answer" form="<%= test_question.id %>" placeholder="Enter answer here"></textarea>
+        <button class="form-button">Submit!</button>
+      </form>
+    <% end %>
+  </body>
+  <script type="text/javascript">
+    // hacky javascript so I don't have to spa this app, obviously this timer is pretty contrived and not great
+    var startTime = new Date('<%= @test.start_time %>');
+    var endTime = new Date('<%= @test.end_time %>');
+    var intervalDuration = 1000;
+    var timeDiff = endTime.getTime() - startTime.getTime();
+    var interval = setInterval(function () {
+      var timer = $.find('.time-left')[0];
+      timeDiff -= intervalDuration;
+      timer.innerText = Math.floor(timeDiff / 1000);
+      if (timeDiff <= 0) {
+        clearInterval(interval);
+      }
+    }, intervalDuration);
+
+    // javascript to ajax the form answers
+    $('.form-button').click(function (e) {
+      e.preventDefault();
+      var form = e.target.form;
+      var button = $(form).find('.form-button')[0];
+      $(button).attr('disabled', 'disabled');
+      // need to undo this if submit fails but i'll cut that for time
+      $.post(form.action, {
+        authenticity_token: form.children.authenticity_token.value,
+        test_question_id: form.children.test_question_id.value,
+        answer: form.children.answer.value
+      }).then(function () {
+      })
+    })
+
+    // need some stuff here for when everything is done
+  </script>
+</html>
