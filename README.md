@@ -1,3 +1,5 @@
 # README
 
 This is a basic form app with generated a quiz for users. I cut out the entire front end setup thing because of time constraints, but then I realized that I didn't really remember how to cleanly put javascript in simple html.erb files either. The next steps would be adding a done page and cleaning up the ui portion of it, as well as adding admin dashboard support to flesh out the questions needing to be asked. You could also make 1 question per page and have some sort of state in the front end application.. but that takes more setup time. Also you need a way to aggregate the test answers so that someone can actually score it. I added auth stuff because it didn't really make sense to me to create tests and answers without some sort of user being associated with it.
+
+In terms of tech choices, rails seemed like the best way to bootstrap this thing quickly with a relational database. I didn't see any reason to not have a relational database for this type of app, so I used postgres along with Ruby on Rails.
